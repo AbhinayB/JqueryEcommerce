@@ -1,0 +1,105 @@
+<html>
+	<head>
+		
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+		<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+		<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+	</head>
+	
+	<body>
+		<div data-role="page">
+		
+		<div data-role="header">
+			<h3>welcome to header </h3>
+		</div>
+                    <form action="#" method="get" onsubmit="submitter()">
+		<div role="main" class="ui-content">
+			
+                    <input type="email" required placeholder="Enter your Email" id="email1"/>
+			
+			<input type="password" placeholder="Enter your password" id="pwd"/>
+                        <button type="submit" value="Login" id="btn">Login</button>
+			
+		</div>
+		</form>
+		<div data-role="footer">
+                    <a onclick="location.href='register.html'">Register</a>
+		</div>
+		</div>
+		
+		<script>
+			$(document).ready(function(){
+                            $.mobile.pageLoadErrorMessage = "";
+                             var UsDB=openDatabase("UserDatabase","1.0","My user Login DataBase",2*1024*1024);
+							
+					$(function create () {
+						UsDB.transaction(function(tx){
+						tx.executeSql('CREATE TABLE IF NOT EXISTS Products(id unique,name,vendorid,cost,remaining,imgurl NOT NULL)');
+					        tx.executeSql('CREATE TABLE IF NOT EXISTS Cart(productid,userid)');
+						tx.executeSql('INSERT INTO Products(id,name,vendorid,cost,remaining,imgurl) values ("1","Adidas Performance Pant","2","$54.76","13","data\/adidasperformance.jpg")');
+                                                tx.executeSql('INSERT INTO Products(id,name,vendorid,cost,remaining,imgurl) values ("2","Coofandy checked Shirt","1","$51.76","12","data\/coofandycheckedtshirt.jpg")');
+						tx.executeSql('INSERT INTO Products(id,name,vendorid,cost,remaining,imgurl) values ("3","Funnyt Shirt","1","$64","43","data\/funnytshirt.jpg")');
+                                                tx.executeSql('INSERT INTO Products(id,name,vendorid,cost,remaining,imgurl) values ("4","Hagers men pant","2","$78","24","data\/hagersmenpant.jpg")');
+                                                tx.executeSql('INSERT INTO Products(id,name,vendorid,cost,remaining,imgurl) values ("5","Hanes T Shirt","1","$68","78","data\/hanestshirt.jpg")');
+                                                tx.executeSql('INSERT INTO Products(id,name,vendorid,cost,remaining,imgurl) values ("6","Harem casual pant","2","$98.99","34","data\/haremcasual.jpg")');
+                                                tx.executeSql('INSERT INTO Products(id,name,vendorid,cost,remaining,imgurl) values ("7","Italy Morn chinos pant","2","$79.99","90","data\/italymornchinospant.jpg")');
+                                                tx.executeSql('INSERT INTO Products(id,name,vendorid,cost,remaining,imgurl) values ("8","Neleus Purple t shirt","1","$12.98","110","data\/neleuspurpletshirt.jpg")');
+                                                tx.executeSql('INSERT INTO Products(id,name,vendorid,cost,remaining,imgurl) values ("9","Slim tapered","2","$40.66","79","data\/slimtapered.jpg")');
+                                                tx.executeSql('INSERT INTO Products(id,name,vendorid,cost,remaining,imgurl) values ("10","South pole mens active","2","$76.86","63","data\/southpolemensactive.jpg")');
+					        tx.executeSql('INSERT INTO Products(id,name,vendorid,cost,remaining,imgurl) values ("11","Women V shaped T-shirt","1","$90.99","78","data\/womenvshapedtshirt.jpg")');
+                                                tx.executeSql('INSERT INTO Products(id,name,vendorid,cost,remaining,imgurl) values ("12","Wrangler long sleeved T shirt","1","$99.99","99","data\/wranglerlongsleevedtshirt.jpg")');
+                                    });
+                                });
+				
+			});
+                   function submitter(){
+					var email=$("#email1").val();
+					var name;
+					var pass=$("#pwd").val();
+					
+					var Userdb3=openDatabase("UserDatabase","1.0","My user Login DataBase",2*1024*1024);
+			                var srid;
+                                        if(email=="admin@gmail.com"&&pass=="admin")
+                                        {
+                                           localStorage.setItem("user","admin");
+                                           document.location.href="./newprod.html";
+                                           return ;
+                                        }
+				$(function display(){
+				 		Userdb3.transaction(function(tx){
+						tx.executeSql('SELECT * FROM Regg',[], function(tx, results){
+						var len = results.rows.length;
+    					var count=0;
+    					for( var i=0;i<len;i++){
+    						if((results.rows.item(i).email)==email&&(results.rows.item(i).pwd)==pass){
+                                                    name=results.rows.item(i).Username;
+    							count++;
+                                                        srid=results.rows.item(i).userid;
+                                                        localStorage.setItem("userid",srid);
+    						}
+    						
+    						}
+                                                
+    						if(count==1){
+                                                    localStorage.setItem("user",name);
+    							document.location.href="./Welcome.html";
+                                                        var cart = {};
+                                                        cart.products = [];
+                                                        localStorage.setItem('cart', JSON.stringify(cart));
+    						}
+    						else{
+									alert("Your credential are not valid");
+    							
+    						}
+    						
+    						}, null);
+								
+						});
+			
+					});
+					}	
+		</script>
+		
+	</body>
+	
+</html>

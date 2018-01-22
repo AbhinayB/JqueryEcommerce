@@ -1,0 +1,79 @@
+<html>
+	<head>
+		
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+		<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+		<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+	</head>
+	
+	<body>
+		<div data-role="page">
+			<div data-role="header">
+			<h3>Fill here to Register </h3>
+		</div>
+		<form>
+                    <span id="alt" style="color: green"></span>
+			<div role="main" class="ui-content">
+			
+			Username:-<input type="text" placeholder="Enter your Username" id="name" required=""/>
+			Email:-<input type="email" placeholder="enter your email" id="email" required="">
+			Password:-<input type="password" placeholder="Enter your password" id="pwd" required=""/>
+			Address:-<input type="text" placeholder="Enter your Address" id="address" />
+			Phone No:-<input type="text" placeholder="Enter your phone number" id="phone"/>
+			<input type="button" value="Register" id="btn"/>
+			
+		</div>
+		</form>
+		<div data-role="footer">
+                    <a onclick="location.href='login.html'">Login</a>
+		</div>
+		</div>
+		<script>
+			$(document).ready(function(){
+                            var Userdb3=openDatabase("UserDatabase","1.0","My user Login DataBase",2*1024*1024);
+							
+					$(function create () {
+						Userdb3.transaction(function(tx){
+						tx.executeSql('CREATE TABLE IF NOT EXISTS Regg(userid,Username unique,email NOT NULL,pwd NOT NULL,address,phone)');
+					
+						});
+					});
+				$("#btn").click(function(){
+					
+					var name=$("#name").val();
+					var email=$("#email").val();
+					var pass=$("#pwd").val();
+					var add=$("#address").val();
+					var phone=$("#phone").val();
+                                        
+                                        if(name==""||email==""||pass==""||add==""||phone=="")
+                                        {
+                                            alert("Enter all the fields.");
+                                        }
+                                        else
+                                        {
+                                          $(function insert () {
+                                              var idd;
+                                              Userdb3.transaction(function(tx){
+                                              tx.executeSql('SELECT * FROM Regg',[], function(tx, results){
+						idd = results.rows.length;
+                                                }, null);
+                                            });
+						Userdb3.transaction(function(tx){
+						tx.executeSql('INSERT INTO Regg(userid,Username,email,pwd,address,phone) values("'+idd+'","'+name+'","'+email+'","'+pass+'","'+add+'","'+phone+'")');
+						});
+						
+				 	});  
+                                         $("#alt").animate({opacity: 1.0}, 3000, function(){
+        $("#alt").html("<h3>Sucessfully registered go to login page..<h3>"); 
+    });  
+                                        }
+					
+				
+				});
+			});
+		</script>
+		
+	</body>
+	
+</html>

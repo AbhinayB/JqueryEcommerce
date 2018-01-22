@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+<link rel="stylesheet" href="themes/despa.min.css" />
+<link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" />
+<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+
+<script src="marketing.js" type="text/javascript"></script>
+<script>
+    function dynamic(obj){
+        var Userdb3=openDatabase("UserDatabase","1.0","My user Login DataBase",2*1024*1024);
+    Userdb3.transaction(function(tx){
+						tx.executeSql('SELECT * FROM Products where id=="'+obj.id+'"',[], function(tx, results){
+                                                    var len = results.rows.length;
+    					for( var i=0;i<len;i++){
+                                             $('#pname').text(results.rows.item(i).name);
+         $('#imgu').attr('src',results.rows.item(i).imgurl);
+         $('#pcost').text("Cost:"+results.rows.item(i).cost);
+         $('#prem').text("Remaining items:"+results.rows.item(i).remaining);
+    						}
+                   });
+               });
+    }
+  
+</script>
+</head>
+<body>
+<div data-role="page" id="products">
+  <div data-role="header">
+      <span class="ui-title"></span>
+    
+    <h2>Welcome to Sports Store</h2>
+    <a onclick="location.href='profile.html'" class="ui-btn-left">Profile</a>
+    <a onclick="logout()" class="ui-btn-right">Logout</a>
+    <span class="ui-title"></span>
+  </div>
+  <div data-role="main" class="ui-content">
+    <h2>Search</h2>
+    <form class="ui-filterable">
+      <input id="myFilter" data-type="search">
+    </form>
+    <div data-role="controlgroup" >
+    <a id="1" onclick="shirts(this)" href="#" data-role="button">Vendor1</a>
+    <a id="2" onclick="pants(this)" href="#" data-role="button">Vendor2</a>
+</div>
+    <ul data-role="listview" data-filter="true" data-input="#myFilter" data-inset="true" id="lstviews">
+    </ul>
+    <div data-role="popup" id="poper">
+        <h4 id="pname"></h4>
+      <img id='imgu' src=''>
+      <h5 id="pcost"></h5>
+      <h5 id="prem"></h5>
+</div>
+  </div>
+  <div data-role="footer" data-position="fixed">
+    <div data-role="navbar">
+      <ul>
+        <li><a href="#" class="ui-btn-active ui-state-persist" data-icon="search">Home</a></li>
+        <li><a href="#cart" onclick="location.reload()" data-icon="grid">Cart</a></li>
+      </ul>
+    </div>
+  </div> 
+</div> 
+
+    
+    
+<div data-role="page" id="cart">
+  <div data-role="header">
+    <h1>Items in cart</h1>
+     <a onclick="logout()" class="ui-btn-right">Logout</a>
+    <span class="ui-title" />
+  </div>
+
+  <div data-role="main" class="ui-content">
+    <h2>Search cart</h2>
+    <form class="ui-filterable">
+      <input id="myFilter2" data-type="search">
+    </form>
+    <ul data-role="listview" data-filter="true" data-input="#myFilter2" data-inset="true" id="lstcart">
+    </ul>
+  </div>
+
+  <div data-role="footer" data-position="fixed">
+    <div data-role="navbar">
+      <ul>
+        <li><a href="#products" data-icon="search">Home</a></li>
+        <li><a href="#" class="ui-btn-active ui-state-persist" data-icon="grid">Cart</a></li>
+      </ul>
+    </div>
+  </div>
+</div> 
+
+</body>
+</html>

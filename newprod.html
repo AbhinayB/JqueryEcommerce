@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Admin Page</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+        <link rel="stylesheet" href="themes/despa.min.css" />
+<link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" />
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+<script src="marketing.js" type="text/javascript"></script>
+
+        <script>
+            $(document).ready(function(){
+                $.mobile.pageLoadErrorMessage = "";
+                if(localStorage.getItem("user")!="admin")
+                {
+                    document.location.href="welcome.html";
+                }
+            });
+            function addproduct()
+            {
+                var name=$("#proname").val();
+		var cost=$("#procost").val();
+		var rem=$("#prorem").val();
+		var img=$("#proimg").val();
+                var ven=$("#proven").val();
+                var length;
+                var Userdb3=openDatabase("UserDatabase","1.0","My user Login DataBase",2*1024*1024);
+                Userdb3.transaction(function(tx){
+                                              tx.executeSql('SELECT * FROM products',[], function(tx, results){
+						length = results.rows.length+1;
+                                                }, null);
+                                            });
+                 Userdb3.transaction(function(tx){ 
+						tx.executeSql('INSERT INTO products(id,name,vendorid,cost,remaining,imgurl) values("'+length+'","'+name+'","'+ven+'","'+cost+'","'+rem+'","'+img+'")');
+						});  
+                                                $("#addit").html("<h3>Product added.<h3>");
+                                                $(this).find("input[type=text], textarea").val("");
+                                                $('#proo').trigger("reset");
+                                                return true;
+            }   
+           
+        </script>
+    </head>
+    <body>
+        <div data-role="page" id="pageone">
+  <div data-role="header">
+      <a onclick="window.location.href='welcome.html'" class="ui-btn-left">Home</a>
+      <a onclick="logout()" class="ui-btn-right">Logout</a>
+    <span class="ui-title" />
+    <h1>Welcome Admin</h1>
+  </div>
+
+  <div data-role="main" class="ui-content">
+      <h3 id="addit"></h3>
+      <form action="#" id="proo" method="get" onsubmit="return addproduct()">
+           Product Name: <input type="text" required id="proname"/>
+           Product vendor:
+           <select id="proven">
+               <option>1</option>
+               <option>2</option>
+           </select>
+         Product Cost: <input type="text" required  id="procost"/>
+      Products Remaining:<input type="text" required id="prorem"/>
+      Product image path from images folder:<input type="text" required id="proimg"/>
+      <button type="submit">add new product</button>
+      </form>
+      <h3 id="proname"></h3>
+      <h3 id="email"></h3>
+      <h3 id="address"></h3>
+      <h3 id="phone"></h3>
+  </div>
+  <div data-role="footer" data-position="fixed">
+    <h1>Contact us</h1>
+  </div>
+</div> 
+
+
+ 
+    </body>
+</html>
